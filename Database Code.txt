@@ -1,0 +1,127 @@
+create table account(
+username varchar(30) NOT NULL PRIMARY KEY,
+name varchar(30) NOT NULL,
+password varchar(30)NOT NULL ,
+Security varchar(50),
+answer varchar(30) NOT NULL);
+
+select * from account;
+
+CREATE TABLE CustomerData (
+    username VARCHAR2(30) NOT NULL UNIQUE,
+    idtype VARCHAR2(20) NOT NULL,
+    IDNumber VARCHAR2(20) NOT NULL,
+    name VARCHAR2(30) NOT NULL,
+    gender VARCHAR2(15) NOT NULL,
+    country VARCHAR2(20) NOT NULL,
+    address VARCHAR2(50) NOT NULL,
+    phone VARCHAR2(20) NOT NULL,
+    email VARCHAR2(40) NOT NULL,
+    CONSTRAINT fk_Customer FOREIGN KEY (username) REFERENCES account(username)
+);
+
+select * from CustomerData;
+
+create table bookPackage(
+username VARCHAR(30) NOT NULL UNIQUE,
+select_package VARCHAR(30) NOT NULL,
+TotalPersons VARCHAR(30) NOT NULL,
+idType VARCHAR(30) NOT NULL,
+IDNumber VARCHAR(30) NOT NULL,
+phone VARCHAR(30) NOT NULL,
+TotalPrice VARCHAR(30) NOT NULL,
+Booked_Time VARCHAR2(30),
+CONSTRAINT fk_bookpackage FOREIGN KEY (username) REFERENCES account(username)
+);
+CREATE OR REPLACE TRIGGER add_package_booked
+BEFORE INSERT ON bookPackage
+FOR EACH ROW
+BEGIN
+    :NEW.Booked_Time := TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS');
+END;
+/
+
+select * from bookPackage;
+
+CREATE TABLE BOOKHOTEL (
+    username VARCHAR2(30) NOT NULL UNIQUE,
+    NameofHotel VARCHAR2(30) NOT NULL,
+    Totalpersons VARCHAR2(30) NOT NULL,
+    Days VARCHAR2(10) NOT NULL,
+    AC VARCHAR2(10), 
+    FOOD VARCHAR2(10) NOT NULL,
+    idType VARCHAR2(30) NOT NULL,
+    IDNumber VARCHAR2(30) NOT NULL,
+    phone VARCHAR2(30) NOT NULL,
+    TotalPrice VARCHAR2(30) NOT NULL,
+    DateBooked VARCHAR2(30) NOT NULL,
+    CONSTRAINT fk_BOOKHOTEL FOREIGN KEY (username) REFERENCES account(username)
+);
+
+CREATE OR REPLACE TRIGGER add_Hotel_booked
+BEFORE INSERT ON BOOKHOTEL
+FOR EACH ROW
+BEGIN
+    :NEW.DateBooked := TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS');
+END;
+/
+
+select * from BOOKHOTEL;
+
+
+create table Review(
+username varchar(30),
+reviewid varchar(30),
+hotel_package varchar(30),
+rating varchar(30),
+CONSTRAINT fk_Review_Account FOREIGN KEY (username)
+REFERENCES account(username));
+Drop table Review;
+select * from Review;
+
+create table Payment(
+username varchar(30),
+paymentid varchar(30),
+Hotel_Package varchar(30),
+Payment_type varchar(30),
+Payment_amount varchar(30),
+Payment_date varchar(30),
+ CONSTRAINT fk_Payment_Account FOREIGN KEY (username)
+REFERENCES account(username));
+
+CREATE OR REPLACE TRIGGER add_payment
+BEFORE INSERT ON Payment
+FOR EACH ROW
+BEGIN
+    :NEW.Payment_date := TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS');
+END;
+/
+
+
+select * from Payment;
+
+create table Destination(
+username varchar(30)UNIQUE,
+idtype varchar(30),
+IDnumber varchar(30),
+Phone varchar(30),
+Location varchar(30),
+no_persons varchar(30),
+no_days varchar(30),
+transport_type varchar(30),
+tour_activity varchar(30),
+total_price varchar(30),
+time_booked varchar(30),
+CONSTRAINT fk_Destination_Account FOREIGN KEY (username)
+REFERENCES account(username)
+);
+
+select * from Destination;
+
+CREATE OR REPLACE TRIGGER add_Desti_payment
+BEFORE INSERT ON Destination
+FOR EACH ROW
+BEGIN
+    :NEW.time_booked := TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS');
+END;
+/
